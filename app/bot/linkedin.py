@@ -11,7 +11,14 @@ from .get_credentials import Credentials
 
 class Linkedin:
     def __init__(self, ) -> None:
-        self.driver = webdriver.Chrome()
+        self.options= webdriver.ChromeOptions()
+        self.options.add_argument("--headless")
+        self.options.add_argument("--disable-gpu")
+        self.options.add_argument("--ignore-certificate-errors")
+        self.options.add_argument("--disable-extensions")
+        self.options.add_argument("--no-sandbox")
+        self.options.add_argument("--disable-dev-shm-usage")
+        self.driver = webdriver.Chrome(options=self.options)
         self.credentials = Credentials()
         credentials = self.credentials.get_credentials()
         self.username = credentials['username']
@@ -26,6 +33,7 @@ class Linkedin:
         username.send_keys(self.username)
         password.send_keys(self.password)
         btn_enter.click()
+        print("clicou login!!")
 
 
     def followPeople(self):
@@ -40,12 +48,14 @@ class Linkedin:
                     try:
                         connect_btn = self.driver.find_element(By.XPATH, "//button[contains(@class, 'artdeco-button artdeco-button--2 artdeco-button--primary ember-view ml1')]")
                         connect_btn.click()
+                        print("fez uma conexão!")
                     except:
                         pass
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
-            time.sleep(2)
+            time.sleep(4)
             next_page = self.driver.find_element(By.XPATH, "//button[contains(@aria-label, 'Avançar')]")
             next_page.click()
+            print("avançou pagina!")
             time.sleep(6)
 
 
