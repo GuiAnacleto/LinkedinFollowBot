@@ -10,6 +10,6 @@ class Credentials:
         self.__password = password
 
     def get_credentials(self):
-        self.__username = input("Digite o seu username: ")
+        self.__username = input("Digite o seu email: ")
         self.__password = getpass("Digite a sua senha: ")
         return {"username": self.__username, "password": self.__password}

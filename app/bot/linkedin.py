@@ -4,10 +4,13 @@
 #mandar mensagem apresentação.
 
 import time
+import os
 from selenium import webdriver
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from .get_credentials import Credentials
+from .search_key import ler_arquivo_texto
 
 class Linkedin:
     def __init__(self, ) -> None:
@@ -18,9 +21,11 @@ class Linkedin:
         self.options.add_argument("--disable-extensions")
         self.options.add_argument("--no-sandbox")
         self.options.add_argument("--disable-dev-shm-usage")
-        self.driver = webdriver.Chrome(options=self.options)
+        self.options.add_argument('--log-level=3')
+        self.driver = webdriver.Chrome(ChromeDriverManager().install(),options=self.options)
         self.credentials = Credentials()
         credentials = self.credentials.get_credentials()
+        os.system('cls')
         self.username = credentials['username']
         self.password = credentials['password'] 
 
@@ -33,11 +38,12 @@ class Linkedin:
         username.send_keys(self.username)
         password.send_keys(self.password)
         btn_enter.click()
-        print("clicou login!!")
+        print("Clicou login!!")
 
 
     def followPeople(self):
-        self.driver.get("https://www.linkedin.com/search/results/people/?keywords=engenheiro%20de%20software&origin=SWITCH_SEARCH_VERTICAL&sid=!L*")
+        #https://www.linkedin.com/search/results/people/?keywords=engenheiro%20de%20software&origin=SWITCH_SEARCH_VERTICAL&sid=!L*
+        self.driver.get(ler_arquivo_texto())
         time.sleep(10)
         while True:
             buttons = self.driver.find_elements(By.XPATH, "//button[contains(@class, 'artdeco-button artdeco-button--2 artdeco-button--secondary ember-view')]")
@@ -48,14 +54,14 @@ class Linkedin:
                     try:
                         connect_btn = self.driver.find_element(By.XPATH, "//button[contains(@class, 'artdeco-button artdeco-button--2 artdeco-button--primary ember-view ml1')]")
                         connect_btn.click()
-                        print("fez uma conexão!")
+                        print("Fez uma conexão!")
                     except:
                         pass
             self.driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
             time.sleep(4)
             next_page = self.driver.find_element(By.XPATH, "//button[contains(@aria-label, 'Avançar')]")
             next_page.click()
-            print("avançou pagina!")
+            print("Avançou para próxima página!")
             time.sleep(6)
 
 
